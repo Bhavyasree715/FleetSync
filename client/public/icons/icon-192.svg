@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="grad192" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="truckGrad192" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="36" fill="url(#grad192)" />
+  <path d="M 50 110 L 50 82 A 4 4 0 0 1 54 78 L 108 78 L 124 94 L 140 94 A 4 4 0 0 1 144 98 L 144 110" fill="none" stroke="url(#truckGrad192)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  <rect x="50" y="110" width="94" height="8" fill="url(#truckGrad192)" rx="2" />
+  <circle cx="70" cy="122" r="12" fill="#0f172a" stroke="#10b981" stroke-width="6" />
+  <circle cx="124" cy="122" r="12" fill="#0f172a" stroke="#10b981" stroke-width="6" />
+  <circle cx="70" cy="122" r="4" fill="#10b981" />
+  <circle cx="124" cy="122" r="4" fill="#10b981" />
+  <circle cx="96" cy="62" r="5" fill="#ef4444" />
+</svg>

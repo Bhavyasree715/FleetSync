@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # FleetSync Backend API & WebSocket Engine
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: fleetsync-server
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - DATABASE_URL=file:./dev.db
+      - JWT_SECRET=fleetsync-super-secret-jwt-key-ita0316-2026
+      - CORS_ORIGIN=http://localhost:5173
+      - VAPID_PUBLIC_KEY=BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U
+      - VAPID_PRIVATE_KEY=UUx0EXAMPLE_VAPID_PRIVATE_KEY_FLEETSYNC
+    volumes:
+      - ./server/prisma:/app/prisma
+    networks:
+      - fleetsync-net
+
+  # FleetSync Mobile-First PWA Frontend
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: fleetsync-client
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - server
+    networks:
+      - fleetsync-net
+
+networks:
+  fleetsync-net:
+    driver: bridge
