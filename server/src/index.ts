@@ -1,5 +1,7 @@
 import express from 'express';
 import http from 'http';
+import path from 'path';
+import fs from 'fs';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -54,6 +56,31 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Mount API routes
 app.use('/api', routes);
+
+// Serve frontend build if available (single-service Render / production deployment)
+const clientDistPath = path.resolve(__dirname, '../../client/dist');
+const altClientDistPath = path.resolve(__dirname, '../client/dist');
+const effectiveDistPath = fs.existsSync(clientDistPath)
+  ? clientDistPath
+  : fs.existsSync(altClientDistPath)
+  ? altClientDistPath
+  : null;
+
+if (effectiveDistPath) {
+  console.log(`📦 Serving static frontend bundle from: ${effectiveDistPath}`);
+  app.use(express.static(effectiveDistPath));
+  app.get('*', (req, res, next) => {
+    if (
+      req.path.startsWith('/api') ||
+      req.path.startsWith('/socket.io') ||
+      req.path.startsWith('/api-docs') ||
+      req.path.startsWith('/health')
+    ) {
+      return next();
+    }
+    res.sendFile(path.join(effectiveDistPath, 'index.html'));
+  });
+}
 
 // Health check
 app.get('/health', (req, res) => {
